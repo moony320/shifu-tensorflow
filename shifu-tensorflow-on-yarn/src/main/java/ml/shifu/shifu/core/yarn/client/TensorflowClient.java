@@ -221,7 +221,7 @@ public class TensorflowClient implements AutoCloseable {
             LOG.info("We use default global in tensorflow yarn jar instead of user's own.");
             globalConfPath = Constants.GLOBAL_DEFAULT_XML;
         }
-        globalConf.addResource(globalConfPath);
+        globalConf.addResource(new Path(globalConfPath));
 
         // collect all dependent jars
         List<String> libjars = allLibJars(line);

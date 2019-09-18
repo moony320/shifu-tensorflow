@@ -221,9 +221,9 @@ public class TensorflowApplicationMaster extends AbstractApplicationMaster {
                 boolean isChiefWorkerReady = session.getTensorflowClusterSpec()._isChiefWorkerReady();
                 
                 LOG.warn("readyPsCnt:" + readyPsCnt +
-                        "totalPsCnt: " + totalPsCnt +
-                        "readyWorkerCnt: " + readyWorkerCnt + 
-                        "totalWorkerCnt: " + totalWorkerCnt);
+                        ", totalPsCnt: " + totalPsCnt +
+                        ", readyWorkerCnt: " + readyWorkerCnt +
+                        ", totalWorkerCnt: " + totalWorkerCnt);
                 
                 // if all ps and 95% of workers are ready and waiting time over 10 minuetes, we will continue training and 
                 //  abandon those are not ready

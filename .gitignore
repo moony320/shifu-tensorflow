@@ -6,3 +6,7 @@
 ../python_env.zip
 shifu-0.12.0-hdp-yarn.tar.gz
 *.iml
+/tmp/
+localenv/
+*.swp
+*.log

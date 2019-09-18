@@ -111,9 +111,10 @@ public class TensorflowTaskExecutor implements Watcher {
     // callback method would be trigger if master collect all workers ip and port
     public void process(WatchedEvent event) {
         LOG.info("event path:" + event.getPath());
-        if(Watcher.Event.EventType.NodeCreated == event.getType() && 
+        if((Watcher.Event.EventType.NodeCreated == event.getType() || Event.EventType.NodeDataChanged == event.getType()) &&
                 Constants.TENSORFLOW_FINAL_CLUSTER.equalsIgnoreCase(event.getPath())) {
             try {
+                LOG.info("Zookeeper event: Node created");
                 tensorflowCluster = new String(zookeeper.getData(Constants.TENSORFLOW_FINAL_CLUSTER, false, null));
                 
                 // reset taskid due to it may changed because current task could be backup task and replaced slow-register task
@@ -171,6 +172,8 @@ public class TensorflowTaskExecutor implements Watcher {
                 LOG.error("Error when getting backup training data path from zookeeper", e);
                 throw new RuntimeException(e);
             }
+        } else {
+            LOG.error("Unexpected zk event: " + event);
         }
     }
 

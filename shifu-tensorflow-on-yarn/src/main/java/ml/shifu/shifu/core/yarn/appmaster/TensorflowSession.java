@@ -29,6 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import ml.shifu.shifu.util.Environment;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -143,8 +144,13 @@ public class TensorflowSession implements Watcher {
         // create zookeeper server for sync tensorflow cluster spec
         // This has been settled in prepare of AM
         if(zookeeperServer == null) {
-            zookeeperServerHostPort = startZookeeperServer();
+            if (globalConf.get(Environment.ZOO_KEEPER_SERVERS) != null) {
+                zookeeperServerHostPort = globalConf.get(Environment.ZOO_KEEPER_SERVERS);
+            } else {
+                zookeeperServerHostPort = startZookeeperServer();
+            }
             try {
+                LOG.info("Initializing Zookeeper: " + zookeeperServerHostPort);
                 zookeeperServer = new GuaguaZooKeeper(zookeeperServerHostPort, Integer.MAX_VALUE, 5, 1000, this);
             } catch (IOException e) {
                 LOG.error("create zookeeper server fails!", e);
